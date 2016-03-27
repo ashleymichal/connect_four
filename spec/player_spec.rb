@@ -19,14 +19,14 @@ module ConnectFour
     context "#color" do
       it "returns the color" do
         player = Player.new(@input)
-        expect(player.color).to eql :red
+        expect(player.color).to eq :red
       end
     end
 
     context "#name" do
       it "returns the name" do
         player = Player.new(@input)
-        expect(player.name).to eql "Ashley"
+        expect(player.name).to eq "Ashley"
       end
     end
 
