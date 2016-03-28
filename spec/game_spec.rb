@@ -43,7 +43,35 @@ module ConnectFour
       it "asks the player to make a move" do
         game = Game.new([ashley, ben])
         allow(game).to receive(:current_player) { ashley }
-        expected = "Ashley: Enter a column number between 1 and 7."
+        expected = "Ashley: Enter a column number between 1 and 7 to make a move"
+      end
+    end
+
+    context "#get_move" do
+      it "converts human_move of '1' to '0'" do
+        game = Game.new([ashley, ben])
+        expect(game.get_move("1")).to eq 0
+      end
+
+      it "converts human_move of '7' to '6'" do
+        game = Game.new([ashley, ben])
+        expect(game.get_move("7")).to eq 6
+      end
+    end
+
+    context "#game_over_message" do
+      it "returns '{current player name} won!' if board shows a winner" do
+        game = Game.new([ashley, ben])
+        allow(game).to receive(:current_player) { ashley }
+        allow(game.board).to receive(:game_over) { :winner }
+        expect(game.game_over_message).to eq "Ashley won!"
+      end
+     
+      it "returns 'The game ended in a tie' if board shows a draw" do
+        game = Game.new([ashley, ben])
+        allow(game).to receive(:current_player) { ashley }
+        allow(game.board).to receive(:game_over) { :draw }
+        expect(game.game_over_message).to eq "The game ended in a tie"
       end
     end
 

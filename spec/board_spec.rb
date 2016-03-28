@@ -13,6 +13,13 @@ module ConnectFour
         board = Board.new
         expect(board.grid).to have(ROWS).things
       end
+
+      it "sets the grid with default numnber of columns" do
+        board = Board.new
+        ROWS.times do |row|
+          expect(board.grid[row]).to have(COLUMNS).things
+        end
+      end
     end
 
     context "#grid" do

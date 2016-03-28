@@ -7,6 +7,12 @@ module ConnectFour
 
     def initialize(input = {})
       @grid = input.fetch(:grid, default_grid)
+    end    
+
+    def formatted_grid
+      grid.each do |row|
+        puts row.map { |cell| cell.value.empty? ? "_" : cell.value }.join(" ")
+      end
     end
 
     def get_cell(x, y)

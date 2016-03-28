@@ -12,7 +12,41 @@ module ConnectFour
     end
 
     def solicit_move
-      "#{current_player.name}: Enter a column number between 1 and 7."
+      "#{current_player.name}: Enter a column number between 1 and 7 to make a move"
     end
+
+    def get_move(human_move = gets.chomp)
+      human_move_to_column(human_move)
+    end
+
+    def game_over_message
+      return "#{current_player.name} won!" if board.game_over == :winner
+      return "The game ended in a tie" if board.game_over == :draw
+    end
+
+    def play
+      puts "#{current_player.name} has randomly been selected as the first player"
+      while true
+        board.formatted_grid
+        puts ""
+        puts solicit_move
+        x, y = get_move
+        board.set_cell(x, y, current_player.color)
+        if board.game_over
+          puts game_over_message
+          board.formatted_grid
+          return
+        else
+          switch_players
+        end
+      end
+    end
+     
+    private
+     
+      def human_move_to_column(human_move)
+        human_move.to_i - 1
+      end
+
   end
 end
