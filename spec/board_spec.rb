@@ -9,15 +9,16 @@ module ConnectFour
         expect { Board.new(grid: "grid") }.not_to raise_error
       end
 
-      it "sets the grid with default number of rows" do
+      # dropping pieces is easier with columns of rows
+      it "sets the grid with default number of columns" do
         board = Board.new
-        expect(board.grid).to have(ROWS).things
+        expect(board.grid).to have(COLUMNS).things
       end
 
-      it "sets the grid with default numnber of columns" do
+      it "sets the grid with default numnber of rows" do
         board = Board.new
-        ROWS.times do |row|
-          expect(board.grid[row]).to have(COLUMNS).things
+        ROWS.times do |column|
+          expect(board.grid[column]).to have(ROWS).things
         end
       end
     end
@@ -110,6 +111,9 @@ module ConnectFour
         ]
         board = Board.new(grid: grid)
         expect(board.game_over).to eq :winner
+        grid.map { |row| row.reverse }
+        board = Board.new(grid: grid)
+        expect(board.game_over).to eq :winner
       end
      
       it "returns :draw when all spaces on the board are taken" do
@@ -122,6 +126,7 @@ module ConnectFour
           [x_cell, y_cell, x_cell, y_cell, x_cell, y_cell, x_cell]
         ]
         board = Board.new(grid: grid)
+        # binding.pry
         expect(board.game_over).to eq :draw
       end
      
@@ -137,8 +142,6 @@ module ConnectFour
         board = Board.new(grid: grid)
         expect(board.game_over).to be false
       end
-
-      # END TODO
     end
   end
   

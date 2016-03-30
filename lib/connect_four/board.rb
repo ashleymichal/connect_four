@@ -9,6 +9,7 @@ module ConnectFour
       @grid = input.fetch(:grid, default_grid)
     end    
 
+    # TODO: rewrite to reflect column/row orientation for ConnectFour
     def formatted_grid
       grid.each do |row|
         puts row.map { |cell| cell.value.empty? ? "_" : cell.value }.join(" | ")
@@ -17,6 +18,10 @@ module ConnectFour
 
     def get_cell(x, y)
       grid[x][y]
+    end
+
+    def first_empty_cell(column)
+      grid[column].find_index { |cell| cell.value.nil? }
     end
 
     def set_cell(x, y, value)
@@ -32,7 +37,7 @@ module ConnectFour
     private
 
       def default_grid
-        Array.new(ROWS) { Array.new(COLUMNS) { Cell.new } }
+        Array.new(COLUMNS) { Array.new(ROWS) { Cell.new } }
       end
 
       def winner?
@@ -49,34 +54,16 @@ module ConnectFour
 
       def winning_positions
         runs = grid + grid.transpose +
-          [grid, grid.transpose].map { |grid| diagonals(grid) }.flatten(1)
+          [grid, grid.transpose.reverse].map { |grid| diagonals(grid) }.flatten(1)
         runs.map { |run| run.each_cons(4).to_a }.flatten(1)
       end
 
-      def diagonals(local_grid)
-        rows = local_grid.length
-        columns = local_grid[0].length
-        i = 0; j = 0
-        diagonals = []
-        until local_grid[i].nil? || local_grid[i][j].nil?
-          # run = []
-          start_cell = [i, j]
-          run = (0..columns-1).map do |offset| 
-            # begin
-              local_grid[i-offset][j+offset]
-            # rescue
-            #   break
-            # end
-          end
-          # until i < 0 or j == columns
-          #   run << local_grid[i][j]
-          #   i -= 1; j += 1
-          # end
-          diagonals << run
-          i, j = start_cell
-          start_cell[0] == rows - 1 ? j += 1 : i += 1
+      def diagonals(grid)
+        shifted_grid = []
+        grid.each_with_index do |row, index|
+          shifted_grid << Array.new(index) + row + Array.new(grid.size - index)
         end
-        diagonals.map { |run| run.compact }.select { |run| run.length >= 4 }
+        shifted_grid.transpose.map { |diagonal| diagonal.compact }
       end
 
       def winning_position_values(winning_position)
