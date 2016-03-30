@@ -11,7 +11,7 @@ module ConnectFour
 
     def formatted_grid
       grid.each do |row|
-        puts row.map { |cell| cell.value.empty? ? "_" : cell.value }.join(" ")
+        puts row.map { |cell| cell.value.empty? ? "_" : cell.value }.join(" | ")
       end
     end
 
@@ -48,17 +48,39 @@ module ConnectFour
       end
 
       def winning_positions
-        grid +
-        grid.transpose# +
-        # TODO diagonals
+        runs = grid + grid.transpose +
+          [grid, grid.transpose].map { |grid| diagonals(grid) }.flatten(1)
+        runs.map { |run| run.each_cons(4).to_a }.flatten(1)
+      end
+
+      def diagonals(local_grid)
+        rows = local_grid.length
+        columns = local_grid[0].length
+        i = 0; j = 0
+        diagonals = []
+        until local_grid[i].nil? || local_grid[i][j].nil?
+          # run = []
+          start_cell = [i, j]
+          run = (0..columns-1).map do |offset| 
+            # begin
+              local_grid[i-offset][j+offset]
+            # rescue
+            #   break
+            # end
+          end
+          # until i < 0 or j == columns
+          #   run << local_grid[i][j]
+          #   i -= 1; j += 1
+          # end
+          diagonals << run
+          i, j = start_cell
+          start_cell[0] == rows - 1 ? j += 1 : i += 1
+        end
+        diagonals.map { |run| run.compact }.select { |run| run.length >= 4 }
       end
 
       def winning_position_values(winning_position)
         winning_position.map { |cell| cell.value }
-      end
-
-      def diagonals
-        # TODO
       end
 
   end

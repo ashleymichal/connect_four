@@ -71,34 +71,42 @@ module ConnectFour
         allow(board).to receive(:draw?) { false }
         expect(board.game_over).to be false
       end
- 
-      it "returns :winner when row has objects with values that are all the same" do
-        grid = [
-          [x_cell, x_cell, x_cell],
-          [y_cell, x_cell, y_cell],
-          [y_cell, y_cell, empty]
-        ]
-        board = Board.new(grid: grid)
-        expect(board.game_over).to eq :winner
-      end
 
       # TODO: rewrite tests to use ConnectFour board format
-     
-      it "returns :winner when column has objects with values that are all the same" do
+      it "returns :winner when row has 4 consecutive objects with values that are all the same" do
         grid = [
-          [x_cell, x_cell, empty],
-          [y_cell, x_cell, y_cell],
-          [y_cell, x_cell, empty]
+          [empty, empty,  empty,  empty,  empty,  empty,  empty],
+          [empty, empty,  empty,  empty,  empty,  empty,  empty],
+          [empty, empty,  empty,  empty,  empty,  empty,  empty],
+          [empty, x_cell, empty,  empty,  x_cell, empty,  empty],
+          [empty, x_cell, x_cell, x_cell, x_cell, x_cell, empty],
+          [empty, y_cell, x_cell, x_cell, y_cell, y_cell, x_cell]
         ]
         board = Board.new(grid: grid)
         expect(board.game_over).to eq :winner
       end
      
-      it "returns :winner when diagonal has objects with values that are all the same" do
+      it "returns :winner when column has 4 consecutive objects with values that are all the same" do
         grid = [
-          [x_cell, empty, empty],
-          [y_cell, x_cell, y_cell],
-          [y_cell, x_cell, x_cell]
+          [empty, empty,  empty,  empty,  empty,  empty,  empty],
+          [empty, empty,  empty,  empty,  empty,  empty,  empty],
+          [empty, x_cell, empty,  empty,  empty,  empty,  empty],
+          [empty, x_cell, empty,  empty,  x_cell, empty,  empty],
+          [empty, x_cell, x_cell, y_cell, x_cell, x_cell, empty],
+          [empty, x_cell, x_cell, x_cell, y_cell, y_cell, x_cell]
+        ]
+        board = Board.new(grid: grid)
+        expect(board.game_over).to eq :winner
+      end
+     
+      it "returns :winner when diagonal has 4 consecutive objects with values that are all the same" do
+        grid = [
+          [empty, empty,  empty,  empty,  empty,  empty,  empty],
+          [empty, empty,  empty,  empty,  empty,  empty,  empty],
+          [empty, empty,  empty,  empty,  empty,  x_cell, empty],
+          [empty, x_cell, empty,  empty,  x_cell, y_cell, empty],
+          [empty, x_cell, x_cell, x_cell, y_cell, x_cell, empty],
+          [empty, y_cell, x_cell, x_cell, y_cell, y_cell, x_cell]
         ]
         board = Board.new(grid: grid)
         expect(board.game_over).to eq :winner
@@ -106,9 +114,12 @@ module ConnectFour
      
       it "returns :draw when all spaces on the board are taken" do
         grid = [
-          [x_cell, y_cell, x_cell],
-          [y_cell, x_cell, y_cell],
-          [y_cell, x_cell, y_cell]
+          [x_cell, y_cell, x_cell, y_cell, x_cell, y_cell, x_cell],
+          [x_cell, y_cell, x_cell, y_cell, x_cell, y_cell, x_cell],
+          [y_cell, x_cell, y_cell, x_cell, y_cell, x_cell, y_cell],
+          [y_cell, x_cell, y_cell, x_cell, y_cell, x_cell, y_cell],
+          [x_cell, y_cell, x_cell, y_cell, x_cell, y_cell, x_cell],
+          [x_cell, y_cell, x_cell, y_cell, x_cell, y_cell, x_cell]
         ]
         board = Board.new(grid: grid)
         expect(board.game_over).to eq :draw
@@ -116,9 +127,12 @@ module ConnectFour
      
       it "returns false when there is no winner or draw" do
         grid = [
-          [x_cell, empty, empty],
-          [y_cell, empty, empty],
-          [y_cell, empty, empty]
+          [empty, empty,  empty,  empty,  empty,  empty,  empty],
+          [empty, empty,  empty,  empty,  empty,  empty,  empty],
+          [empty, x_cell, empty,  empty,  empty,  empty,  empty],
+          [empty, x_cell, empty,  empty,  x_cell, empty,  empty],
+          [empty, y_cell, x_cell, y_cell, x_cell, x_cell, empty],
+          [empty, x_cell, x_cell, x_cell, y_cell, y_cell, x_cell]
         ]
         board = Board.new(grid: grid)
         expect(board.game_over).to be false
