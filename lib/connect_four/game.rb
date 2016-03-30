@@ -30,7 +30,8 @@ module ConnectFour
         board.formatted_grid
         puts ""
         puts solicit_move
-        x, y = get_move
+        y = get_move
+        x = board.first_empty_cell(y)
         board.set_cell(x, y, current_player.color)
         if board.game_over
           puts game_over_message

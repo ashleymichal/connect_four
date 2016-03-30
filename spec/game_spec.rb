@@ -13,9 +13,7 @@ module ConnectFour
         game = Game.new([ashley, ben])
         expect(game.current_player).to eq ashley
       end
-    end
-
-    context "#initialize" do
+      
       it "randomly selects an other_player" do
         allow_any_instance_of(Array).to receive(:shuffle) { [ashley, ben] }
         game = Game.new([ashley, ben])
