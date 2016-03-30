@@ -11,8 +11,8 @@ module ConnectFour
 
     # TODO: rewrite to reflect column/row orientation for ConnectFour
     def formatted_grid
-      grid.each do |row|
-        puts row.map { |cell| cell.value.empty? ? "_" : cell.value }.join(" | ")
+      grid.transpose.reverse.each do |row|
+        puts row.map { |cell| cell.value.nil? ? empty_slot : cell.value }.join(" | ")
       end
     end
 
@@ -38,6 +38,10 @@ module ConnectFour
 
       def default_grid
         Array.new(COLUMNS) { Array.new(ROWS) { Cell.new } }
+      end
+
+      def empty_slot
+        "\u25EF".encode('utf-8')
       end
 
       def winner?
