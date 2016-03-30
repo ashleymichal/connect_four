@@ -17,20 +17,21 @@ def black
   "\u26AB".encode('utf-8')
 end
 
-puts "Welcome to ConnectFour!"
+if __FILE__ == $0
+  puts "Welcome to ConnectFour!"
 
-print "Please enter a name for Player 1:  "
-p1name = gets.chomp
+  print "Please enter a name for Player 1:  "
+  p1name = gets.chomp
 
-print "...and a name for Player 2:  "
-p2name = gets.chomp
+  print "...and a name for Player 2:  "
+  p2name = gets.chomp
 
-p1 = ConnectFour::Player.new name: p1name, color: white
-p2 = ConnectFour::Player.new name: p2name, color: black
+  p1 = ConnectFour::Player.new name: p1name, color: white
+  p2 = ConnectFour::Player.new name: p2name, color: black
 
-while true
-  game = ConnectFour::Game.new([p1, p2])
-  game.play
+  while true
+    game = ConnectFour::Game.new([p1, p2])
+    game.play
+  end
+
 end
-# initialize game
-# play game

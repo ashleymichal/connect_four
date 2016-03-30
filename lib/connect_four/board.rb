@@ -58,7 +58,7 @@ module ConnectFour
 
       def winning_positions
         runs = grid + grid.transpose +
-          [grid, grid.transpose.reverse].map { |grid| diagonals(grid) }.flatten(1)
+          [grid, grid.reverse].map { |grid| diagonals(grid) }.flatten(1)
         runs.map { |run| run.each_cons(4).to_a }.flatten(1)
       end
 
